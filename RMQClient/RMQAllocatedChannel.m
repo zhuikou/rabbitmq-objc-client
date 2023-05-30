@@ -49,6 +49,7 @@
 @interface RMQAllocatedChannel ()
 @property (nonatomic, copy, readwrite) NSNumber *channelNumber;
 @property (nonatomic, readwrite) NSNumber *contentBodySize;
+
 @property (nonatomic, readwrite) id <RMQDispatcher> dispatcher;
 @property (nonatomic, readwrite) NSMutableDictionary *consumers;
 @property (nonatomic, readwrite) NSMutableDictionary *exchanges;
