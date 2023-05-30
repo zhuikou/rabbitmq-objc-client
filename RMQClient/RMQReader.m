@@ -56,6 +56,7 @@
     if (self) {
         self.transport = transport;
         self.frameHandler = frameHandler;
+        self.lastHeartbeatDate = [NSDate date];
     }
     return self;
 }
@@ -71,6 +72,10 @@
         } else {
             [self handleMethodFrame:frame];
         }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.lastHeartbeatDate = [NSDate date];
+        });
     }];
 }
 

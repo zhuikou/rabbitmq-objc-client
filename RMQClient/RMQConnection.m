@@ -62,7 +62,6 @@
 
 @interface RMQConnection ()
 @property (strong, nonatomic, readwrite) id <RMQTransport> transport;
-@property (nonatomic, readwrite) RMQReader *reader;
 @property (nonatomic, readwrite) id <RMQChannelAllocator> channelAllocator;
 @property (nonatomic, readwrite) id <RMQFrameHandler> frameHandler;
 @property (nonatomic, readwrite) id<RMQLocalSerialQueue> commandQueue;

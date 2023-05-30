@@ -94,11 +94,15 @@
 }
 
 - (void)onCancellation:(RMQConsumerCancellationHandler)handler {
-    self.cancellationHandler = handler;
+    if (self.cancellationHandler != nil) {
+        self.cancellationHandler = handler;
+    }
 }
 
 - (void)consume:(RMQMessage *)message {
-    self.deliveryHandler(message);
+    if (self.deliveryHandler != NULL) {
+        self.deliveryHandler(message);
+    }
 }
 
 - (void)cancel {

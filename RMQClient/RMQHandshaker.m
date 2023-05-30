@@ -67,6 +67,10 @@
     return self;
 }
 
+- (void)dealloc {
+    self.completionHandler = nil;
+}
+
 - (void)handleFrameset:(RMQFrameset *)frameset {
     id method = frameset.method;
     if ([method isKindOfClass:[RMQConnectionStart class]]) {

@@ -252,7 +252,9 @@ struct __attribute__((__packed__)) AMQPHeader {
 - (void)socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag {
     void (^foundCallback)(NSData *) = self.callbacks[@(tag)];
     [self.callbacks removeObjectForKey:@(tag)];
-    foundCallback(data);
+    if (foundCallback != NULL) {
+        foundCallback(data);
+    }
 }
 
 - (void)socket:(GCDAsyncSocket *)sock didConnectToHost:(NSString *)host port:(uint16_t)port {

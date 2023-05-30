@@ -53,12 +53,14 @@
 #import "RMQWaiterFactory.h"
 #import "RMQTLSOptions.h"
 #import "RMQStarter.h"
+#import "RMQReader.h"
 
 /// @brief Public API: Interface to an AMQP 0-9-1 connection. See the <a href="https://www.rabbitmq.com/specification.html">spec</a> for details.
 @interface RMQConnection : NSObject<RMQFrameHandler, RMQSender, RMQStarter, RMQTransportDelegate>
 
 @property (nonnull, copy, nonatomic, readonly) NSString *vhost;
 @property (nonnull, copy, nonatomic, readwrite) RMQTable *serverProperties;
+@property (nullable, nonatomic, readwrite) RMQReader *reader;
 
 /// @brief Returns a GCD dispatch queue used for newly created connections by default.
 +(nonnull dispatch_queue_t) defaultDispatchQueue;
@@ -86,6 +88,22 @@
                         syncTimeout:(nonnull NSNumber *)syncTimeout
                            delegate:(nullable id<RMQConnectionDelegate>)delegate
                       delegateQueue:(nonnull dispatch_queue_t)delegateQueue
+                       recoverAfter:(nonnull NSNumber *)recoveryInterval
+                   recoveryAttempts:(nonnull NSNumber *)recoveryAttempts
+         recoverFromConnectionClose:(BOOL)shouldRecoverFromConnectionClose;
+
+- (nonnull instancetype)initWithUri:(NSString *)uri
+                         tlsOptions:(RMQTLSOptions *)tlsOptions
+         userProvidedConnectionName:(NSString *)connectionName
+                         channelMax:(nonnull NSNumber *)channelMax
+                           frameMax:(nonnull NSNumber *)frameMax
+                          heartbeat:(nonnull NSNumber *)heartbeat
+                     connectTimeout:(nonnull NSNumber*)connectTimeout
+                        readTimeout:(nonnull NSNumber*)readTimeout
+                       writeTimeout:(nonnull NSNumber*)writeTimeout
+                        syncTimeout:(nonnull NSNumber *)syncTimeout
+                           delegate:(id<RMQConnectionDelegate>)delegate
+                      delegateQueue:(dispatch_queue_t)delegateQueue
                        recoverAfter:(nonnull NSNumber *)recoveryInterval
                    recoveryAttempts:(nonnull NSNumber *)recoveryAttempts
          recoverFromConnectionClose:(BOOL)shouldRecoverFromConnectionClose;
@@ -173,6 +191,22 @@
                         syncTimeout:(nonnull NSNumber *)syncTimeout
                            delegate:(nullable id<RMQConnectionDelegate>)delegate
                       delegateQueue:(nonnull dispatch_queue_t)delegateQueue;
+
+- (nonnull instancetype)initWithUri:(NSString *)uri
+                         tlsOptions:(RMQTLSOptions *)tlsOptions
+         userProvidedConnectionName:(NSString *)connectionName
+                         channelMax:(nonnull NSNumber *)channelMax
+                           frameMax:(nonnull NSNumber *)frameMax
+                          heartbeat:(nonnull NSNumber *)heartbeat
+                     connectTimeout:(nonnull NSNumber*)connectTimeout
+                        readTimeout:(nonnull NSNumber*)readTimeout
+                       writeTimeout:(nonnull NSNumber*)writeTimeout
+                        syncTimeout:(nonnull NSNumber *)syncTimeout
+                           delegate:(id<RMQConnectionDelegate>)delegate
+                      delegateQueue:(dispatch_queue_t)delegateQueue
+                       recoverAfter:(nonnull NSNumber *)recoveryInterval
+                   recoveryAttempts:(nonnull NSNumber *)recoveryAttempts
+         recoverFromConnectionClose:(BOOL)shouldRecoverFromConnectionClose;
 
 /*!
  * @brief Configurable TLS options. Use this if you wants TLS on a port other than 443.
